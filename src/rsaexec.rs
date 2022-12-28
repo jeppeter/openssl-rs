@@ -30,6 +30,7 @@ use super::{debug_trace,debug_buffer_trace,format_buffer_log,format_str_log};
 use super::ioparam::*;
 use super::passparam::*;
 use super::keyparam::*;
+use super::digestparam::*;
 
 
 fn rsa_handler(ns :NameSpaceEx,_optargset :Option<Arc<RefCell<dyn ArgSetImpl>>>,_ctx :Option<Arc<RefCell<dyn Any>>>) -> Result<(),Box<dyn Error>> {	
@@ -61,7 +62,9 @@ pub fn load_rsa_handler(parser :ExtArgsParser) -> Result<(),Box<dyn Error>> {
 	let i = add_noout_param(&h)?;
 	let j = add_text_param(&i)?;
 	let k = add_modulus_param(&j)?;
+	let l = add_check_param(&k)?;
+	let m = add_pvk_param(&l)?;
 	/**/
-	extargs_load_commandline!(parser,&k)?;
+	extargs_load_commandline!(parser,&m)?;
 	Ok(())
 }

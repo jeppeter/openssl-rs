@@ -36,6 +36,7 @@ mod loglib;
 mod ioparam;
 mod passparam;
 mod keyparam;
+mod digestparam;
 mod rsaexec;
 
 
