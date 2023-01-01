@@ -64,7 +64,9 @@ pub fn load_rsa_handler(parser :ExtArgsParser) -> Result<(),Box<dyn Error>> {
 	let k = add_modulus_param(&j)?;
 	let l = add_check_param(&k)?;
 	let m = add_pvk_param(&l)?;
+	let n = add_cipher_param(&m)?;
+	let o = add_digest_param(&n)?;
 	/**/
-	extargs_load_commandline!(parser,&m)?;
+	extargs_load_commandline!(parser,&o)?;
 	Ok(())
 }

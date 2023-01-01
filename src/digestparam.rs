@@ -26,9 +26,9 @@ pub fn add_digest_param(ins :&str) -> Result<String,Box<dyn Error>> {
 		}
 		val = val2.clone();
 
+		val[k]["sha256-cbc##sha256 cbc handle##"] = serde_json::json!(false);
+		val[k]["md5##md5##"] = serde_json::json!(false);
 
-		val[k]["in##Input file##"] = serde_json::json!(null);
-		val[k]["out##Output file##"] = serde_json::json!(null);
 		idx += 1;
 	}
 
@@ -57,8 +57,8 @@ pub fn add_cipher_param(ins :&str) -> Result<String,Box<dyn Error>> {
 		val = val2.clone();
 
 
-		val[k]["in##Input file##"] = serde_json::json!(null);
-		val[k]["out##Output file##"] = serde_json::json!(null);
+		val[k]["des-cbc##des cbc handle##"] = serde_json::json!(false);
+		val[k]["des3##des3##"] = serde_json::json!(false);
 		idx += 1;
 	}
 
