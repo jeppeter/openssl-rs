@@ -7,7 +7,7 @@ use std::error::Error;
 
 extargs_error_class!{IoParamError}
 
-pub fn add_in_out_param(ins :&str) -> Result<String,Box<dyn Error>> {
+pub fn add_in_param(ins :&str) ->  Result<String,Box<dyn Error>> {
 	let  val2 :serde_json::value::Value = serde_json::from_str(ins)?;
 	let mut idx :usize = 0;
 	let mut val :serde_json::value::Value = serde_json::json!({});
@@ -28,6 +28,33 @@ pub fn add_in_out_param(ins :&str) -> Result<String,Box<dyn Error>> {
 
 
 		val[k]["in##Input file##"] = serde_json::json!(null);
+		idx += 1;
+	}
+
+	let rets :String = serde_json::to_string_pretty(&val)?;
+	Ok(rets)
+}
+
+pub fn add_out_param(ins :&str) -> Result<String,Box<dyn Error>> {
+	let  val2 :serde_json::value::Value = serde_json::from_str(ins)?;
+	let mut idx :usize = 0;
+	let mut val :serde_json::value::Value = serde_json::json!({});
+
+	if !val2.is_object() {
+		extargs_new_error!{IoParamError,"not valid json\n{}",ins}
+	}
+
+	for (k,_) in val2.as_object().unwrap().iter() {
+		if idx > 0 {
+			extargs_new_error!{IoParamError,"more than one parameters"}
+		}
+
+		if !val2[k].is_object() {
+			extargs_new_error!{IoParamError,"[{}] not valid object",k}
+		}
+		val = val2.clone();
+
+
 		val[k]["out##Output file##"] = serde_json::json!(null);
 		idx += 1;
 	}
@@ -36,7 +63,13 @@ pub fn add_in_out_param(ins :&str) -> Result<String,Box<dyn Error>> {
 	Ok(rets)
 }
 
-pub fn add_in_out_form_param(ins :&str) -> Result<String,Box<dyn Error>> {
+pub fn add_in_out_param(ins :&str) -> Result<String,Box<dyn Error>> {
+	let c1 = add_in_param(ins)?;
+	let c2 = add_out_param(&c1)?;
+	Ok(c2)
+}
+
+pub fn add_in_form_param(ins :&str) -> Result<String,Box<dyn Error>> {
 	let  val2 :serde_json::value::Value = serde_json::from_str(ins)?;
 	let mut idx :usize = 0;
 	let mut val :serde_json::value::Value = serde_json::json!({});
@@ -57,12 +90,44 @@ pub fn add_in_out_form_param(ins :&str) -> Result<String,Box<dyn Error>> {
 
 
 		val[k]["inform##Input format, one of DER PEM##"] = serde_json::json!(null);
+		idx += 1;
+	}
+
+	let rets :String = serde_json::to_string_pretty(&val)?;
+	Ok(rets)
+}
+
+pub fn add_out_form_param(ins :&str) -> Result<String,Box<dyn Error>> {
+	let  val2 :serde_json::value::Value = serde_json::from_str(ins)?;
+	let mut idx :usize = 0;
+	let mut val :serde_json::value::Value = serde_json::json!({});
+
+	if !val2.is_object() {
+		extargs_new_error!{IoParamError,"not valid json\n{}",ins}
+	}
+
+	for (k,_) in val2.as_object().unwrap().iter() {
+		if idx > 0 {
+			extargs_new_error!{IoParamError,"more than one parameters"}
+		}
+
+		if !val2[k].is_object() {
+			extargs_new_error!{IoParamError,"[{}] not valid object",k}
+		}
+		val = val2.clone();
+
 		val[k]["outform##Output format, one of DER PEM PVK##"] = serde_json::json!(null);
 		idx += 1;
 	}
 
 	let rets :String = serde_json::to_string_pretty(&val)?;
 	Ok(rets)
+}
+
+pub fn add_in_out_form_param(ins :&str) -> Result<String,Box<dyn Error>> {
+	let c1 = add_in_form_param(ins)?;
+	let c2 = add_out_form_param(&c1)?;
+	Ok(c2)
 }
 
 pub fn add_noout_param(ins :&str) -> Result<String,Box<dyn Error>> {

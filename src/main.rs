@@ -37,7 +37,9 @@ mod ioparam;
 mod passparam;
 mod keyparam;
 mod digestparam;
+mod pkeyoptparam;
 mod rsaexec;
+mod genpkeyexec;
 
 
 #[extargs_map_function()]
@@ -53,6 +55,7 @@ fn main() -> Result<(),Box<dyn Error>> {
 	let parser :ExtArgsParser = ExtArgsParser::new(Some(optref.clone()),None)?;
 	loglib::prepare_log(parser.clone())?;
 	rsaexec::load_rsa_handler(parser.clone())?;
+	genpkeyexec::load_genpkey_handler(parser.clone())?;
 	let ores = parser.parse_commandline_ex(None,None,None,None);
 	if ores.is_err() {
 		let e = ores.err().unwrap();
