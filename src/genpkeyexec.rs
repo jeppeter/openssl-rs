@@ -20,6 +20,7 @@ use std::any::Any;
 
 use lazy_static::lazy_static;
 use std::collections::HashMap;
+use ssllib::config::*;
 
 
 #[allow(unused_imports)]
@@ -33,10 +34,11 @@ use super::digestparam::*;
 use super::pkeyoptparam::*;
 
 fn genpkey_handler(ns :NameSpaceEx,_optargset :Option<Arc<RefCell<dyn ArgSetImpl>>>,_ctx :Option<Arc<RefCell<dyn Any>>>) -> Result<(),Box<dyn Error>> {	
-	let sarr :Vec<String>;
+	let types :String;
 	init_log(ns.clone())?;
-	sarr = ns.get_array("subnargs");
-	debug_trace!("sarr {:?}",sarr);
+	types = get_cipher_name(ns.clone())?;
+	let cfg :ConfigValue = get_pkeyopt_param(ns.clone())?;
+
 	Ok(())
 }
 
